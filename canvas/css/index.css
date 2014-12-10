@@ -1,0 +1,49 @@
+*{
+    border:0;
+    padding:0;
+    margin:0;
+}
+
+canvas{
+    position: relative;
+    top: 10px;
+    left:400px;
+    border: 1px solid gray;
+}
+
+#cpanel{
+    position: absolute;
+    top:10px;
+    left:5px;
+    padding:20px;
+    border: 1px solid gray;
+    background-color: #09F;
+    border-radius: 10px;
+    box-shadow: 2px 2px 12px green;
+}
+
+.lightBorder {
+    border: 2px solid white;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+p{
+    margin: 4px;
+}
+
+#clearCanvas {
+    margin-top: 30px;
+}
+.lightBorder  ul{
+	list-style-type:none;
+}
+.lightBorder  ul li{
+	float:left;
+	margin-left:5px;
+	}
+.lightBorder  ul li img{
+		height:20px;
+		width:20px;
+}
+		
