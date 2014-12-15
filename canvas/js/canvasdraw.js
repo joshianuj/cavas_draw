@@ -1,15 +1,18 @@
 // JavaScript Document
 var can= new CanvasMaker(document.getElementById("canvas"));
 can.init();
-
 function CanvasMaker(canvas)
 {
 	var that=this;
 	this.canvas=canvas;
 	this.context=this.canvas.getContext("2d");
 	this.lineWidth = document.getElementById("lineWidth");
+	this.fillColor = document.getElementById("fillColor"),
+	this.strokeColor = document.getElementById("strokeColor"),
+	this.canvasColor = document.getElementById("backgroundColor");
 	this.dragging=false;
 	this.dragStartLocation;
+	this.createDon;
 	this.x;
 	this.y;
 	this.snapshot;
@@ -19,19 +22,32 @@ function CanvasMaker(canvas)
 	
 	this.init=function()
 	{
-		
-		that.context.strokeStyle="purple";
-		that.context.lineWidth = that.lineWidth.value;
+		that.context.strokeStyle = strokeColor.value;
+		that.context.fillStyle = fillColor.value;
+		that.context.lineWidth = lineWidth.value;
 		that.context.lineCap="round";
 		///adding listeners
 		that.canvas.addEventListener("mousedown",that.dragStart,false);
 		that.canvas.addEventListener("mousemove",that.drag,false);		
 		that.canvas.addEventListener("mouseup",that.dragStop,false);
 		
+		
+		var abc=document.getElementById("polygonSides");
+		abc.addEventListener("mousemove",function(){
+			that.createDon=document.createElement("div");
+			that.createDon.innerText= document.getElementById("polygonSides").value;
+			that.createDon.style.position="absolute";
+			document.getElementById("polygonSide").appendChild(that.createDon);
+			});
+		
+		
+	
+	
+		console.log(that.createDon);
 		console.log("here it is"+that.x);
 			//passing parameters to another class
-		that.painter = new Painter(that);
-		that.painter.init();
+		/*that.painter = new Painter(that);
+		that.painter.init();*/
 	}
 	
 	//taking a snapshot
@@ -82,7 +98,7 @@ function CanvasMaker(canvas)
 		that.dragging=false;
 		that.restoreSnapshot();
 		that.position=that.getCanvasCoordinates(event);
-		that.draw(that.position)
+		that.draw(that.position);
 	}
 	
 	//Drawing a Line
@@ -94,6 +110,36 @@ function CanvasMaker(canvas)
 		that.context.stroke();
 	}
 	
+	this.drawPen=function(position)
+	{
+		console.log("damn:");
+		var isDrawing;
+		that.context.lineWidth = 1;
+		that.context.lineJoin = that.context.lineCap = 'square';
+		that.context.shadowBlur = 0;
+		that.canvas.onmousedown = function(e) 
+		{
+			console.log("asdsadsadsa");
+			isDrawing = true;
+			that.context.moveTo(e.clientX, e.clientY);
+		};
+		that.canvas.onmousemove = function(e) 
+		{
+		if (isDrawing) {
+			that.context.lineTo(e.clientX, e.clientY);
+			that.context.stroke();
+		}
+		};
+			that.canvas.onmouseup = function() 
+		{
+			isDrawing = false;
+		};
+			that.canvas.onmouseout=function()
+		{
+			isDrawing=false;
+		};
+	}
+	
 	//drawing a cirlce
 	this.drawCircle=function (position) 
 	{
@@ -103,13 +149,14 @@ function CanvasMaker(canvas)
 		that.context.arc(that.dragStartLocation.x, that.dragStartLocation.y, that.radius, 0, 2 * Math.PI, false);
 		this.x=that.dragStartLocation.x;
 		this.y=that.dragStartLocation.y;
+		var temp =new NewClass(this.x,this.y,that.canvas);
 		that.value=1;
 		console.log(that.dragStartLocation.x);
 		
 	}
 	
 	//drawing a polygon
-/*	this.drawPolygon=function(position, sides, angle) 
+	this.drawPolygon=function(position, sides, angle) 
 	{
 		var coordinates = [],
 			radius = Math.sqrt(Math.pow((that.dragStartLocation.x -position.x), 2) + Math.pow((that.dragStartLocation.y - position.y), 2)),
@@ -127,7 +174,7 @@ function CanvasMaker(canvas)
 		}
 		that.context.closePath();
 	}
-*/
+
 		
 	//options bar
 	this.draw=function (position) 
@@ -139,6 +186,7 @@ function CanvasMaker(canvas)
 			polygonAngle = document.getElementById("polygonAngle").value,
 			lineCap = document.querySelector('input[type="radio"][name="lineCap"]:checked').value;
 			that.context.lineCap = lineCap;
+	
 			/*for(var i=0;i<img.length;i++)
 			{
 				img[i].onclick = function (e) 
@@ -158,7 +206,12 @@ function CanvasMaker(canvas)
 		}
 	
 		if (shape === "polygon") {
-			/*that.drawPolygon(position, polygonSides, polygonAngle * (Math.PI / 180));*/
+			that.drawPolygon(position, polygonSides, polygonAngle * (Math.PI / 180));
+		}
+		if(shape==="pen")
+		{
+			console.log("enter");
+			that.drawPen(position);
 		}
 		if (fillBox.checked) {
 			that.context.fill();
@@ -169,12 +222,29 @@ function CanvasMaker(canvas)
 	}
 	
 	
-	//change line width
+	//change line width fill style stroke style and background color
 	this.changeLineWidth=function() 
 	{
 		that.context.lineWidth = this.value;
 		event.stopPropagation();
 	}
+	this.changeFillStyle=function() {
+	   that.context.fillStyle = this.value;
+		event.stopPropagation();
+	}
+	
+	this.changeStrokeStyle=function() {
+		that.context.strokeStyle = this.value;
+		event.stopPropagation();
+	}
+	
+	this.changeBackgroundColor=function() {
+		that.context.save();
+		that.context.fillStyle = document.getElementById("backgroundColor").value;
+		that.context.fillRect(0, 0, that.canvas.width, that.canvas.height);
+		that.context.restore();
+	}
+
 	
 }
 
