@@ -9,7 +9,8 @@
 </head>
 
 <body id="body">
-<canvas id="canvas" width="900" height="800"></canvas>
+<canvas class="canvas" id="canvas" width="900" height="800">
+<canvas class="canvas2" id="canvas2" width='900' height='800'></canvas></canvas>
 
 <div id="cpanel" class="cpanel">
     <p><label>Fill: <input id="fillBox" type="checkbox" checked="checked"></label></p>
@@ -46,14 +47,19 @@
             <p><label>Stroke Color: <input id="strokeColor" type="color"></label></p>
         
     </div>
+    <div>
+      <button name="clear" value="clear" id="clearCanvas" >Clear canvas</button>
+    <button id="save" onClick="saveIt()">save</button>
+     <!--  <button name="drag" value="drag" ids="drag" onClick="init()" >drag</button></div>-->
 </div>
 
 <!--//
 //<script type="text/javascript" src="js/linkup.js"></script>
 <script type="text/javascript" src="js/newDragRectOnly.js"></script>-->
-<script type="text/javascript" src="js/newDraggable.js"></script>
+<!--<script type="text/javascript" src="js/newDraggable.js"></script>-->
 <script type="text/javascript" src="js/canvasdraw.js"></script>
-
+<script type="text/javascript" src="js/save.js"></script>
+<script type="text/javascript" src="js/shapes.js"></script>
 
 
 </body>
