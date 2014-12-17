@@ -50,4 +50,11 @@ p{
 	
 	top:30px;
 	right:5px;}
-		
+
+button{
+	width:auto;
+	height:30px;
+	padding:10px 10px;
+	background:black;
+	color:white;}
+	
