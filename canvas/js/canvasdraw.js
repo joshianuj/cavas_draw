@@ -10,6 +10,9 @@ function CanvasMaker(canvas)
 	this.fillColor = document.getElementById("fillColor"),
 	this.strokeColor = document.getElementById("strokeColor"),
 	this.canvasColor = document.getElementById("backgroundColor");
+	this.clear=document.getElementById("clearCanvas");
+	this.eraser=document.getElementById("eraser");
+	
 	this.dragging=false;
 	this.dragStartLocation;
 	this.createDon;
@@ -22,20 +25,27 @@ function CanvasMaker(canvas)
 	
 	this.init=function()
 	{
-		that.context.strokeStyle = strokeColor.value;
-		that.context.fillStyle = fillColor.value;
-		that.context.lineWidth = lineWidth.value;
+		that.context.strokeStyle = that.strokeColor.value;
+		that.context.fillStyle = that.fillColor.value;
+		that.context.lineWidth = that.lineWidth.value;
 		that.context.lineCap="round";
 		///adding listeners
 		that.canvas.addEventListener("mousedown",that.dragStart,false);
 		that.canvas.addEventListener("mousemove",that.drag,false);		
 		that.canvas.addEventListener("mouseup",that.dragStop,false);
+		that.clear.addEventListener("click",that.clearCanvas,false);
+		that.clear.addEventListener("click",that.eraseCanvas,false);
 		
+		that.canvasColor.addEventListener("input",that.changeBackgroundColor,false);
+		that.strokeColor.addEventListener("input",that.changeStrokeStyle,false);
+		that.fillColor.addEventListener("input",that.changeFillStyle,false);
+		that.lineWidth.addEventListener("input", that.changeLineWidth, false);
+	
 		
 		var abc=document.getElementById("polygonSides");
 		abc.addEventListener("mousemove",function(){
 			that.createDon=document.createElement("div");
-			that.createDon.innerText= document.getElementById("polygonSides").value;
+			that.createDon.innerText=document.getElementById("polygonSides").value;
 			that.createDon.style.position="absolute";
 			document.getElementById("polygonSide").appendChild(that.createDon);
 			});
@@ -101,6 +111,12 @@ function CanvasMaker(canvas)
 		that.draw(that.position);
 	}
 	
+	this.clearCanvas=function(){
+		that.context.clearRect(0, 0, that.canvas.width, that.canvas.height);
+		}
+		
+	this.eraseCanvas=function(){
+	}
 	//Drawing a Line
 	this.drawLine=function(position) 
 	{
@@ -114,6 +130,7 @@ function CanvasMaker(canvas)
 	{
 		console.log("damn:");
 		var isDrawing;
+		that.context.strokeStyle="red";
 		that.context.lineWidth = 1;
 		that.context.lineJoin = that.context.lineCap = 'square';
 		that.context.shadowBlur = 0;
@@ -138,6 +155,7 @@ function CanvasMaker(canvas)
 		{
 			isDrawing=false;
 		};
+	
 	}
 	
 	//drawing a cirlce
@@ -186,7 +204,7 @@ function CanvasMaker(canvas)
 			polygonAngle = document.getElementById("polygonAngle").value,
 			lineCap = document.querySelector('input[type="radio"][name="lineCap"]:checked').value;
 			that.context.lineCap = lineCap;
-	
+			
 			/*for(var i=0;i<img.length;i++)
 			{
 				img[i].onclick = function (e) 
@@ -208,17 +226,14 @@ function CanvasMaker(canvas)
 		if (shape === "polygon") {
 			that.drawPolygon(position, polygonSides, polygonAngle * (Math.PI / 180));
 		}
-		if(shape==="pen")
-		{
-			console.log("enter");
-			that.drawPen(position);
-		}
+		
 		if (fillBox.checked) {
 			that.context.fill();
 		} 
 		else {
 			that.context.stroke();
 		}
+		
 	}
 	
 	
@@ -238,9 +253,10 @@ function CanvasMaker(canvas)
 		event.stopPropagation();
 	}
 	
-	this.changeBackgroundColor=function() {
+	this.changeBackgroundColor=function(e) {
 		that.context.save();
 		that.context.fillStyle = document.getElementById("backgroundColor").value;
+		console.log("Aaaaaaaaa"+that.context.fillStyle);
 		that.context.fillRect(0, 0, that.canvas.width, that.canvas.height);
 		that.context.restore();
 	}
