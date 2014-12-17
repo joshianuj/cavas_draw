@@ -165,12 +165,7 @@ function CanvasMaker(canvas)
 		that.radius = Math.sqrt(Math.pow((that.dragStartLocation.x - position.x), 2) + Math.pow((that.dragStartLocation.y - position.y), 2));
 		that.context.beginPath();
 		that.context.arc(that.dragStartLocation.x, that.dragStartLocation.y, that.radius, 0, 2 * Math.PI, false);
-		this.x=that.dragStartLocation.x;
-		this.y=that.dragStartLocation.y;
-		var temp =new NewClass(this.x,this.y,that.canvas);
-		that.value=1;
-		console.log(that.dragStartLocation.x);
-		
+
 	}
 	
 	//drawing a polygon
